@@ -91,8 +91,8 @@ var contracts = new mongoose.Schema({
         required: true,
         index: true
     },
-    lst001: {
-        type: Boolean,
+    standard: {
+        type: String || null,
         required: true,
         index: true
     }

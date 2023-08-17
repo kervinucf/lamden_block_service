@@ -2,7 +2,6 @@ import util from 'util'
 import { createLogger } from '../logger.mjs'
 
 const logger = createLogger('Database');
-export { isLst001 } from './processors/lst001.mjs'
 
 export function makeKey(contractName, variableName, key) {
     return `${contractName}${variableName ? "." + variableName : ""}${key ? ":" + key : ""}`

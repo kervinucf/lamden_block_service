@@ -105,6 +105,59 @@ export const getInfoEndpoints = (db) => {
         }
     }
 
+
+
+   /**
+    * @openapi
+    * /nfts:
+    *   get:
+    *     tags: ["NFT"]
+    *     summary: Returns all NFT contracts information.
+    *     description: Get all NFT contracts information.
+    *     responses:
+    *       200:
+    *         description: Success
+    */
+    async function get_nfts(req, res) {
+        try {
+            let result = await db.queries.getNFTs()
+            res.send(result)
+        } catch (e) {
+            logger.error(e)
+            res.send({ error: e.message })
+        }
+    }
+
+    /**
+    * @openapi
+    * /nfts/{contractName}:
+    *   get:
+    *     tags: ["NFT"]
+    *     summary: Returns a specific NFT info.
+    *     description: Get a specific NFT contract info by its name.
+    *     parameters:
+    *       - in: path
+    *         name: contractName
+    *         schema:
+    *           type: string
+    *         required: true
+    *         description: Contract Name.
+    *         example: nft_artpiece_001
+    *     responses:
+    *       200:
+    *         description: Success
+    */
+    async function get_nft(req, res) {
+        const { contractName } = req.params
+        try {
+            let result = await db.queries.getNFT(contractName)
+            res.send(result)
+        } catch (e) {
+            logger.error(e)
+            res.send({ error: e.message })
+        }
+    }
+
     return [
         {
             type: 'get',
@@ -125,6 +178,16 @@ export const getInfoEndpoints = (db) => {
             type: 'get',
             route: '/tokens/:contractName',
             handler: get_token
+        },
+        {
+            type: 'get',
+            route: '/nfts/',
+            handler: get_nfts
+        },
+        {
+            type: 'get',
+            route: '/nfts/:contractName',
+            handler: get_nft
         }
     ]
 }

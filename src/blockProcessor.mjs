@@ -25,6 +25,8 @@ export const getBlockProcessor = (services, db) => {
             }
         }else{
             if (blockInfo.reorg || blockInfo.repair) {
+                // route block info to state changes processor via redis
+
                 processBlockReOrg(block, blockInfo)
             }
         }

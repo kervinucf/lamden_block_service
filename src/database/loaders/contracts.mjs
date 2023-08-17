@@ -1,5 +1,6 @@
 import { getDatabase, databaseInit } from "../database.mjs";
-import { isLst001 } from "../processors/lst001.mjs"
+import { analyzeCode } from "../processors/lstChecker.mjs";
+
 import { createLogger } from '../../logger.mjs'
 
 const logger = createLogger('Database');
@@ -35,15 +36,18 @@ const loadContracts = async (drop) => {
                 let found = await db.models.Contracts.findOne({ contractName })
                 if (!found) {
                     let code = await db.queries.getKeyFromCurrentState(contractName, "__code__")
-                    let lst001 = isLst001(code.value)
+                    let standard = analyzeCode(code.value)
 
                     await new db.models.Contracts({
                         contractName,
-                        lst001
+                        standard
                     }).save()
-                    logger.success(`Saved "${contractName}" ${lst001 ? " found LST001 token" : ""}`)
+                    // add custom contract data here
+                    logger.success(`Saved "${contractName}" ${standard} contract`)
+
                 }
             }
+
             let last_blockNum = batch[batch.length - 1].blockNum
             logger.success(`Processed ${progress} txs`)
             get_batch(last_blockNum)
