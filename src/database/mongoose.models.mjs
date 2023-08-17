@@ -92,9 +92,15 @@ var contracts = new mongoose.Schema({
         index: true
     },
     standard: {
-        type: String || null,
-        required: true,
-        index: true
+        type: String,
+        index: true,
+        default: null,
+        validate: {
+            validator: function(v) {
+                return (typeof v === 'string') || (v === null);
+            },
+            message: props => `${props.value} should be a String or null!`
+        }
     }
 });
 

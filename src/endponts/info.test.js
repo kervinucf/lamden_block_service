@@ -10,7 +10,8 @@ let pysocket, app, request;
 
 const validContract = (item) => {
     expect(getType(item.contractName)).toBe('string');
-    expect(getType(item.lst001)).toBe('boolean');
+    // string or null
+    expect(getType(item.standard)).toMatch(/string|null/);
 }
 
 beforeAll(async () => {

@@ -114,7 +114,7 @@ const typeDefs = `#graphql
 
     # info
     type Contract {
-        lst001: Boolean
+        standard: String! 
         contractName: String!
     }
 

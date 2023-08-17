@@ -144,16 +144,16 @@ export const getBlockProcessor = (services, db) => {
                 let foundContractName = await db.models.Contracts.findOne({ contractName })
                 if (!foundContractName) {
                     let code = await db.queries.getKeyFromCurrentState(contractName, "__code__")
-                    let lst001 = db.utils.isLst001(code.value)
+                    let standard = db.utils.analyzeCode(code.value)
                     try {
                         await new db.models.Contracts({
                             contractName,
-                            lst001
+                            standard
                         }).save()
                     } catch (e) {
                         logger.error(e)
                     }
-                    services.sockets.emitNewContract({ contractName, lst001 })
+                    services.sockets.emitNewContract({ contractName, standard })
                 }
             }
         }

@@ -81,11 +81,11 @@ export const getGenesisBlockProcessor = (db) => {
                     if (variableName === "__code__"){
                         let foundContractName = await db.models.Contracts.findOne({ contractName })
                         if (!foundContractName) {
-                            let lst001 = db.utils.isLst001(s.value)
+                            let standard = db.utils.analyzeCode(s.value)
                             try {
                                 const new_contract_document = {
                                     contractName,
-                                    lst001
+                                    standard,
                                 }
                                 await new db.models.Contracts(new_contract_document).save()
                             } catch (e) {
