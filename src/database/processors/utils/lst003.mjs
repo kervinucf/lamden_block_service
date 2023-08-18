@@ -1,16 +1,22 @@
-export const isLst003 = (code, debug = false) => {
-    if (!code) return false;
+export function isLst003(code, debug = false) {
+    let failedChecks = [];
 
-    const requiredFields = [
-        "collection_name = Variable(", "collection_name = Hash(",
-        "collection_owner = Variable(", "collection_owner = Hash(",
-        "collection_nfts = Variable(", "collection_nfts = Hash(",
-        "collection_balances = Variable(", "collection_balances = Hash(",
-        "collection_balances_approvals = Variable(", "collection_balances_approvals = Hash(",
-        "@export def mint_nft", "@export def transfer", "@export def approve", "@export def transfer_from"
-    ];
+    if (!code.includes("def mint_nft")) {
+        failedChecks.push("mint_nft check failed");
+    }
+    if (!code.includes("def transfer")) {
+        failedChecks.push("transfer check failed");
+    }
+    if (!code.includes("def approve")) {
+        failedChecks.push("approve check failed");
+    }
+    if (!code.includes("def transfer_from")) {
+        failedChecks.push("transfer_from check failed");
+    }
 
-    const fieldsPresent = requiredFields.every(field => code.includes(field));
+    if (debug && failedChecks.length) {
+        console.log(failedChecks);
+    }
 
-    return fieldsPresent;
+    return failedChecks.length === 0;
 }
